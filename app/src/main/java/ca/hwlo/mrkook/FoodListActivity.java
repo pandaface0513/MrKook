@@ -1,9 +1,11 @@
 package ca.hwlo.mrkook;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +26,9 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
     private ListView list;
 
     DBClass db;
+
+    String term;
+    long itemInQuestion;
 
     Cursor cursor;
 
@@ -47,7 +52,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
         //if bundle isn't empty
         if(b != null){
             db = new DBClass(this);
-            String term = b.getString("term");
+            term = b.getString("term");
 
             //for the cursor adapter, specify which columns go into which views
             String[] fromColumns = {Constants.NAME, Constants.AMOUNNT};
@@ -99,8 +104,43 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        db.deleteEntry(id);
+        itemInQuestion = id;
+        createAndShowAlertDialog();
+    }
+
+    private void updateUI(){
+        if(term.equals("all")){
+            //if to view all
+            cursor = db.getAllCursor();
+        }else{
+            //if to view selected
+            cursor = db.getSelectedCursor(term);
+        }
+
+        cursorAdapter.swapCursor(cursor);
         cursorAdapter.notifyDataSetChanged();
-        Toast.makeText(this, "Food Removed", Toast.LENGTH_SHORT).show();
+    }
+
+    private void createAndShowAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alert!");
+        builder.setMessage("Do you want to remove this food?");
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                db.deleteEntry(itemInQuestion);
+                updateUI();
+                Toast.makeText(getApplicationContext(), "Food Removed", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

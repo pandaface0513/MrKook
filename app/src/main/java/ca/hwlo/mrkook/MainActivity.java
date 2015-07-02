@@ -65,20 +65,29 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     private void insertFood(){
-        String name = nameField.getText().toString();
-        int amount = Integer.parseInt(amountField.getText().toString());
+        if (nameField.getText().toString().trim().equals(""))
+        {
+            nameField.requestFocus();
+            Toast.makeText(this, "You need to enter a name", Toast.LENGTH_SHORT).show();
+        }else if (amountField.getText().toString().trim().equals(""))
+        {
+            amountField.requestFocus();
+            Toast.makeText(this, "You need to enter a number", Toast.LENGTH_SHORT).show();
+        }else {
+            String name = nameField.getText().toString();
+            int amount = Integer.parseInt(amountField.getText().toString());
 
-        Toast.makeText(this, name + amount, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, name + amount, Toast.LENGTH_SHORT).show();
 
-        long id = sqldb.insertData(name, amount);
+            long id = sqldb.insertData(name, amount);
 
-        if(id < 0){
-            Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+            if(id < 0){
+                Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+            }
+            hideKeyboard();
         }
-
-        hideKeyboard();
     }
 
     private void getAllFood() {
