@@ -70,6 +70,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
                 cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_row, cursor, fromColumns, toViews, 2);
                 list.setAdapter(cursorAdapter);
                 list.setOnItemClickListener(this);
+                list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
                 int dataCount = cursor.getCount();
                 if(dataCount < 1){

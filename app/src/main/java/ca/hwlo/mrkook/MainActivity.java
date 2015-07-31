@@ -105,9 +105,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //String queryResults = sqldb.getSelectedData(term);
 
         //start Food List Intent
-        Intent view = new Intent(this, FoodListActivity.class);
-        view.putExtra("term", term);
-        startActivity(view);
+        //Intent view = new Intent(this, FoodListActivity.class);
+        //view.putExtra("term", term);
+        //startActivity(view);
+
+        String urlString = Constants.API_URL + "?key=" + Constants.API_KEY + "&q=" + term;
+        new Food2ForkAPI().execute(urlString);
+
     }
 
     private void hideKeyboard() {
