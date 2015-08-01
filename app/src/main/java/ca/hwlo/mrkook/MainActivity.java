@@ -2,147 +2,181 @@ package ca.hwlo.mrkook;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+/**
+ * Created by Henry on 2015-07-31.
+ */
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-    DBClass sqldb;
+    private SharedPreferences sharedPrefs;
 
-    //UI Elements
-    EditText nameField, amountField, queryField;
-    Button insertBtn, viewBtn, queryBtn;
+    private static String DEFAULT = "0";
+
+    private TextView titleText, mealText;
+
+    private Button addFood;
+
+    private static String greet = "Welcome back, ";
+
+    //database stuffs below
+    private GridView grid;
+    DBClass db;
+    Cursor cursor;
+    SimpleCursorAdapter cursorAdapter;
+
+    //request codes
+    private static int ADD_FOOD_REQUEST = 111;
+    private static int FIND_RECIPE_REQUEST = 222;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sqldb = new DBClass(this);
+        //changes the title text
+        setTitle("MrKook - Home");
 
-        //UI Elements
-        nameField = (EditText) findViewById(R.id.nameField);
-        amountField = (EditText) findViewById(R.id.amountField);
-        queryField = (EditText) findViewById(R.id.queryField);
+        //check if user data exists, if no, go to setup.
+        sharedPrefs = getSharedPreferences("MrKook", Context.MODE_PRIVATE);
+        String username = sharedPrefs.getString("username", DEFAULT);
 
-        insertBtn = (Button) findViewById(R.id.insertBtn);
-        insertBtn.setOnClickListener(this);
-        viewBtn = (Button) findViewById(R.id.viewBtn);
-        viewBtn.setOnClickListener(this);
-        queryBtn = (Button) findViewById(R.id.queryBtn);
-        queryBtn.setOnClickListener(this);
-    }
+        if(username.equals(DEFAULT)){
+            Toast.makeText(this, "No data found, proceed to setup 1st timer", Toast.LENGTH_SHORT).show();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+            //start setup activity
+            Intent setupIntent = new Intent(this, SetupActivity.class);
+            startActivity(setupIntent);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        }else{  //if yes, then display greeting and food items in grid
+            Toast.makeText(this, "Got data, proceed to greet this user", Toast.LENGTH_SHORT).show();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            //set up the greetings
+            setupGreetings(username);
+
+            //After the greetings, we should set up the database and food items
+            setupFoodGrid();
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
-    private void insertFood(){
-        if (nameField.getText().toString().trim().equals(""))
-        {
-            nameField.requestFocus();
-            Toast.makeText(this, "You need to enter a name", Toast.LENGTH_SHORT).show();
-        }else if (amountField.getText().toString().trim().equals(""))
-        {
-            amountField.requestFocus();
-            Toast.makeText(this, "You need to enter a number", Toast.LENGTH_SHORT).show();
+    private void setupGreetings(String username){
+        //if yes, then initialize UI elements
+        titleText = (TextView) findViewById(R.id.nameTitle);
+        mealText = (TextView) findViewById(R.id.mealText);
+
+        grid = (GridView) findViewById(R.id.foodGrid);
+
+        addFood = (Button) findViewById(R.id.addBtn);
+        addFood.setOnClickListener(this);
+
+        //set up the greeting dialog
+        titleText.setText(greet + username + "!");
+
+        //get current time
+        TimeZone stz = TimeZone.getDefault();
+        GregorianCalendar gCal = new GregorianCalendar(stz);
+
+        int hour = gCal.get(Calendar.HOUR_OF_DAY);
+        String meal;
+
+        if(hour > 6 && hour < 12){
+            meal = "Breakfast?";
+        }else if(hour < 14){
+            meal = "Lunch?";
+        }else if(hour < 18){
+            meal = "Afternoon snack?";
+        }else if(hour < 21){
+            meal = "Dinner?";
         }else {
-            String name = nameField.getText().toString();
-            int amount = Integer.parseInt(amountField.getText().toString());
+            meal = "Late night snack?";
+        }
+        Log.d("Time", meal);
 
-            Toast.makeText(this, name + amount, Toast.LENGTH_SHORT).show();
+        mealText.setText(meal);
+    }
 
-            long id = sqldb.insertData(name, amount);
+    private void setupFoodGrid(){
+        //set up database
+        db = new DBClass(this);
 
-            if(id < 0){
-                Toast.makeText(this, "fail", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this, "success", Toast.LENGTH_SHORT).show();
+        //for cursor adapter, specify which columns go into which views
+        String[] fromColumns = {Constants.NAME, Constants.AMOUNNT};
+        int[] toViews = {R.id.foodNameText, R.id.foodAmount};
+
+        //grab all data entry
+        cursor = db.getAllCursor();
+
+        //check if any data entries
+        if(cursor != null){
+            cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_grid, cursor, fromColumns, toViews, 2);
+            grid.setAdapter(cursorAdapter);
+
+            //insert on click listener here after
+
+            //check if any items in cursor
+            if(cursor.getCount() < 1){
+                Toast.makeText(this, "No food item stored!", Toast.LENGTH_SHORT).show();
             }
-            hideKeyboard();
         }
     }
 
-    private void getAllFood() {
-        //String data = sqldb.getData();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //check which request we're responding //
+        if(requestCode == ADD_FOOD_REQUEST){
+            //make sure the request was successful
+            if(resultCode == RESULT_OK){
+                //then we handle the rest
+                String name = data.getStringExtra("foodName");
+                int amount = data.getIntExtra("foodAmount", 0);
 
-        //start Food List Intent
-        Intent view = new Intent(this, FoodListActivity.class);
-        view.putExtra("term", "all");
-        startActivity(view);
+                //try insert the data into db
+                long id = db.insertData(name, amount);
 
-        //Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
-    }
-
-    private void getFoodSearch(String term){
-        //String queryResults = sqldb.getSelectedData(term);
-
-        //start Food List Intent
-        //Intent view = new Intent(this, FoodListActivity.class);
-        //view.putExtra("term", term);
-        //startActivity(view);
-
-        String urlString = Constants.API_URL + "?key=" + Constants.API_KEY + "&q=" + term;
-        new Food2ForkAPI().execute(urlString);
-
-    }
-
-    private void hideKeyboard() {
-        // Check if no view has focus:
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                if(id < 0){
+                    //fail
+                }else{
+                    //success
+                    updateUI();
+                }
+            }
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void updateUI(){
+        cursor = db.getAllCursor();
+        cursorAdapter.swapCursor(cursor);
+        cursorAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
+        //check which button
+        switch(v.getId()){
+            case R.id.addBtn:
+                Toast.makeText(this,"Proceed to add food page", Toast.LENGTH_SHORT).show();
 
-        switch (id){
-            case R.id.insertBtn:
-                insertFood();
-                break;
-            case R.id.viewBtn:
-                getAllFood();
-                break;
-            case R.id.queryBtn:
-                getFoodSearch(queryField.getText().toString());
-                break;
-            default:
+                Intent addFoodIntent = new Intent(MainActivity.this, AddFoodActivity.class);
+                startActivityForResult(addFoodIntent, ADD_FOOD_REQUEST);
                 break;
         }
     }
-
-
 }
-

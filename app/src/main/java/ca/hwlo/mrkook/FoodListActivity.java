@@ -6,14 +6,12 @@ import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -56,7 +54,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
 
             //for the cursor adapter, specify which columns go into which views
             String[] fromColumns = {Constants.NAME, Constants.AMOUNNT};
-            int[] toViews = {R.id.foodName, R.id.foodAmount};
+            int[] toViews = {R.id.foodNameText, R.id.foodAmount};
 
             if(term.equals("all")){
                 //if to view all
@@ -67,7 +65,7 @@ public class FoodListActivity extends ActionBarActivity implements AdapterView.O
             }
 
             if(cursor != null) {
-                cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_row, cursor, fromColumns, toViews, 2);
+                cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_grid, cursor, fromColumns, toViews, 2);
                 list.setAdapter(cursorAdapter);
                 list.setOnItemClickListener(this);
                 list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
