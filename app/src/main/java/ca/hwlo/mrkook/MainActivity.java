@@ -85,6 +85,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         addFood = (Button) findViewById(R.id.addBtn);
         addFood.setOnClickListener(this);
 
+//        mapBtn = (Button) findViewById(R.id.mapBtn);
+//        mapBtn.setOnClickListener(this);
+
         //set up the greeting dialog
         titleText.setText(greet + username + "!");
 
@@ -177,6 +180,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 Intent addFoodIntent = new Intent(MainActivity.this, AddFoodActivity.class);
                 startActivityForResult(addFoodIntent, ADD_FOOD_REQUEST);
                 break;
+//            case R.id.mapBtn:
+//                Toast.makeText(this,"Proceed to map page", Toast.LENGTH_SHORT).show();
+//
+//                Intent mapIntent = new Intent(MainActivity.this, MapsActivity.class);
+//                startActivity(mapIntent);
+//                break;
         }
     }
 }
