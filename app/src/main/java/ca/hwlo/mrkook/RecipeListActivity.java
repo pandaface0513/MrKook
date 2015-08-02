@@ -1,37 +1,22 @@
 package ca.hwlo.mrkook;
 
-import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class SplashScreen extends AppCompatActivity {
-
-    //Splash Screen Waiting Period
-    private final int SPLASH_WAITING_PERIOD = 4000; //4 Seconds
+public class RecipeListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-
-        //Create New Handler
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(i);
-            }
-        }, SPLASH_WAITING_PERIOD); //Splash Screen Waiting Period
-
+        setContentView(R.layout.activity_recipe_list);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_splash_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_recipe_list, menu);
         return true;
     }
 
