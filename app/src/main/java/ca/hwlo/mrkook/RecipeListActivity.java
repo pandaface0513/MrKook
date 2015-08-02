@@ -4,13 +4,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ListView;
 
 public class RecipeListActivity extends AppCompatActivity {
+
+    //UI Elements
+    private EditText searchField;
+    private ListView recipeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
+
+        setTitle("MrKook - Recipe Result");
+
+        searchField = (EditText) findViewById(R.id.searchField);
+
+        recipeList = (ListView) findViewById(R.id.recipeList);
+
+        Bundle b = getIntent().getExtras();
+
+        String name = b.getString("foodname");
+
+        searchField.setText(name);
+
     }
 
     @Override

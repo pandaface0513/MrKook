@@ -1,18 +1,23 @@
 package ca.hwlo.mrkook;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +25,7 @@ import android.widget.Toast;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -28,7 +34,7 @@ import java.util.TimeZone;
  * Created by Henry on 2015-07-31.
  */
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private SharedPreferences sharedPrefs;
 
@@ -51,7 +57,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     //request codes
     private static int ADD_FOOD_REQUEST = 111;
-    private static int FIND_RECIPE_REQUEST = 222;
+    private static int UPDATE_FOOD_REQUEST = 222;
+    private static int FIND_RECIPE_REQUEST = 333;
+
+    //an array for ingredents
+    private ArrayList<String> ingredents;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +113,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(MainActivity.this,AddFoodActivity.class);
-                    startActivityForResult(i, ADD_FOOD_REQUEST);
-
+                Intent i = new Intent(MainActivity.this, AddFoodActivity.class);
+                startActivityForResult(i, ADD_FOOD_REQUEST);
 
 
             }
@@ -119,6 +129,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mealText = (TextView) findViewById(R.id.mealText);
 
         grid = (GridView) findViewById(R.id.foodGrid);
+        grid.setOnItemLongClickListener(this);
+
+        ingredents = new ArrayList<String>();
 
 //        addFood = (Button) findViewById(R.id.addBtn);
 //        addFood.setOnClickListener(this);
@@ -166,6 +179,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             grid.setAdapter(cursorAdapter);
 
             //insert on click listener here after
+            grid.setOnItemClickListener(this);
 
             //check if any items in cursor
             if(cursor.getCount() < 1){
@@ -194,6 +208,23 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     updateUI();
                 }
             }
+        }else if(requestCode == UPDATE_FOOD_REQUEST){
+            if(resultCode == RESULT_OK){
+                //then we check for the operation
+                String operation = data.getStringExtra("operation");
+                long itemInQuestion = data.getLongExtra("itemInQuestion", 0);
+
+                if(operation.equals("delete")){
+                    showDeleteAlertDialog(itemInQuestion);
+                }
+                if(operation.equals("update")){
+                    String amount = data.getStringExtra("foodamount");
+                    Log.d("lol", amount);
+                    int amountInt = Integer.parseInt(amount);
+                    db.updateEntry(itemInQuestion, amountInt);
+                    updateUI();
+                }
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -203,6 +234,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         cursor = db.getAllCursor();
         cursorAdapter.swapCursor(cursor);
         cursorAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
+        super.onBackPressed();
     }
 
     @Override
@@ -216,5 +253,74 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //                startActivityForResult(addFoodIntent, ADD_FOOD_REQUEST);
 //                break;
         }
+    }
+
+    private void showDeleteAlertDialog(final long itemInQuestion) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alert!");
+        builder.setMessage("Do you want to remove this food?");
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //TODO
+                db.deleteEntry(itemInQuestion);
+                updateUI();
+                Toast.makeText(getApplicationContext(), "Food Removed", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+//        TextView nameText = (TextView) view.findViewById(R.id.foodNameText);
+//        TextView amountText = (TextView) view.findViewById(R.id.foodAmount);
+//
+//
+//        Intent editFood = new Intent(MainActivity.this, FoodDetailActivity.class);
+//        editFood.putExtra("foodname", nameText.getText().toString());
+//        editFood.putExtra("foodamount", amountText.getText().toString());
+//        editFood.putExtra("itemInQuestion", id);
+//
+//        startActivityForResult(editFood, UPDATE_FOOD_REQUEST);
+
+        Toast.makeText(this, "you pressed me", Toast.LENGTH_SHORT).show();
+
+        TextView nameText = (TextView) view.findViewById(R.id.foodNameText);
+        String name = nameText.getText().toString();
+
+        Intent recipeIntent = new Intent(MainActivity.this, RecipeListActivity.class);
+        recipeIntent.putExtra("foodname", name);
+        startActivity(recipeIntent);
+
+
+//
+//        ingredents.add(name);
+//        Toast.makeText(this, ingredents.toString(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+        TextView nameText = (TextView) view.findViewById(R.id.foodNameText);
+        TextView amountText = (TextView) view.findViewById(R.id.foodAmount);
+
+
+        Intent editFood = new Intent(MainActivity.this, FoodDetailActivity.class);
+        editFood.putExtra("foodname", nameText.getText().toString());
+        editFood.putExtra("foodamount", amountText.getText().toString());
+        editFood.putExtra("itemInQuestion", id);
+
+        startActivityForResult(editFood, UPDATE_FOOD_REQUEST);
+        return true;
     }
 }

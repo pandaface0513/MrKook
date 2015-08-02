@@ -66,6 +66,13 @@ public class DBClass {
         return buffer.toString();
     }
 
+    public void updateEntry(long id, int amount){
+        String strFilter = "_id=" + id;
+        ContentValues args = new ContentValues();
+        args.put("amount", amount);
+        db.update(Constants.TABLE_NAME, args, strFilter, null);
+    }
+
     public void deleteEntry(long id)         {
         String string =String.valueOf(id);
         db.execSQL("DELETE FROM " + Constants.TABLE_NAME + " WHERE _id = '" + string + "'");

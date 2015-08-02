@@ -10,7 +10,7 @@ import android.view.MenuItem;
 public class SplashScreen extends AppCompatActivity {
 
     //Splash Screen Waiting Period
-    private final int SPLASH_WAITING_PERIOD = 4000; //4 Seconds
+    private final int SPLASH_WAITING_PERIOD = 2000; //2 Seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
