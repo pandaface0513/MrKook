@@ -5,14 +5,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -33,6 +39,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private Button addFood;
 
     private static String greet = "Welcome back, ";
+
+    ImageButton FAB;
+
 
     //database stuffs below
     private GridView grid;
@@ -73,6 +82,35 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             setupFoodGrid();
         }
 
+//        //For logo in action bar
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setDisplayShowCustomEnabled(true);
+//        actionBar.setIcon(R.mipmap.ic_launcher);
+
+//        // in Activity Context
+//        ImageView icon = new ImageView(this); // Create an icon
+//        icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher));
+//
+//        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+//                .setContentView(icon)
+//                .build();
+//
+//        actionButton.setOnClickListener(this);
+
+        FAB = (ImageButton) findViewById(R.id.imageButton);
+        FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(MainActivity.this,AddFoodActivity.class);
+                    startActivityForResult(i, ADD_FOOD_REQUEST);
+
+
+
+            }
+        });
+
+
     }
 
     private void setupGreetings(String username){
@@ -82,8 +120,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         grid = (GridView) findViewById(R.id.foodGrid);
 
-        addFood = (Button) findViewById(R.id.addBtn);
-        addFood.setOnClickListener(this);
+//        addFood = (Button) findViewById(R.id.addBtn);
+//        addFood.setOnClickListener(this);
 
 //        mapBtn = (Button) findViewById(R.id.mapBtn);
 //        mapBtn.setOnClickListener(this);
@@ -174,6 +212,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         //check which button
         switch(v.getId()){
+<<<<<<< HEAD
             case R.id.addBtn:
                 Toast.makeText(this,"Proceed to add food page", Toast.LENGTH_SHORT).show();
 
@@ -185,6 +224,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 //
 //                Intent mapIntent = new Intent(MainActivity.this, MapsActivity.class);
 //                startActivity(mapIntent);
+=======
+//            case R.id.addBtn:
+//                Toast.makeText(this,"Proceed to add food page", Toast.LENGTH_SHORT).show();
+//
+//                Intent addFoodIntent = new Intent(MainActivity.this, AddFoodActivity.class);
+//                startActivityForResult(addFoodIntent, ADD_FOOD_REQUEST);
+>>>>>>> origin/UIedits
 //                break;
         }
     }
