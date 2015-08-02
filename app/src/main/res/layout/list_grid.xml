@@ -3,19 +3,24 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="false">
+    android:clickable="false"
+    android:background="@drawable/back"
+    >
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text=""
         android:id="@+id/foodNameText"
         android:layout_weight="1"
-        android:gravity="center" />
+        android:gravity="center"
+
+        />
+
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:text=""
         android:id="@+id/foodAmount"
         android:layout_weight="1"
