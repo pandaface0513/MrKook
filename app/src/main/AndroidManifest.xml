@@ -50,6 +50,10 @@
             android:name=".FoodDetailActivity"
             android:label="@string/title_activity_food_detail" >
         </activity>
+        <activity
+            android:name=".MyDatabase"
+            android:label="@string/title_activity_my_database" >
+        </activity>
     </application>
 
 </manifest>

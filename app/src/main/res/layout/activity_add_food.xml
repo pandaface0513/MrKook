@@ -69,7 +69,7 @@
                 android:layout_height="200dp"
                 android:src="@drawable/foodimg"
                 android:layout_width="fill_parent"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:background="#9d0f0c0c"
                 android:backgroundTint="#166f07">
@@ -118,6 +118,31 @@
                 />
 
 
+            <ImageView
+                android:id="@+id/imageView_image"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+
+                android:layout_width="wrap_content"/>
+
+            <Button
+                android:id="@+id/button_insert"
+                android:layout_below="@+id/imageView_image"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+
+                android:layout_width="wrap_content"
+                android:text="Insert In DB"/>
+
+            <Button
+                android:id="@+id/button_retrieve"
+                android:layout_alignLeft="@+id/button_insert"
+                android:layout_below="@+id/button_insert"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:layout_width="wrap_content"
+                android:text="Retrieve from DB"/>
 
         </LinearLayout>
     </ScrollView>

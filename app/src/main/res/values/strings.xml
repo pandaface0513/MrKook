@@ -9,4 +9,5 @@
     <string name="photo">Take Photo</string>
     <string name="title_activity_recipe_list">RecipeListActivity</string>
     <string name="title_activity_food_detail">FoodDetailActivity</string>
+    <string name="title_activity_my_database">MyDatabas</string>
 </resources>
