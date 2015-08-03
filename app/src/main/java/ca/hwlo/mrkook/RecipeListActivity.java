@@ -90,7 +90,7 @@ public class RecipeListActivity extends AppCompatActivity {
                 Log.d("LOL", data);
 
                 //for every object inside the array, grab the data
-                for (int i = 0; i < recipeLimit; i++){
+                for (int i = 0; i < recipeArray.length(); i++){
                     //initialize the recipeData object
                     JSONObject recipeData = recipeArray.getJSONObject(i);
                     //then extract the data

@@ -17,8 +17,6 @@ import android.widget.TextView;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import static android.content.Intent.ACTION_VIEW;
-
 /**
  * Created by Henry on 2015-08-03.
  */
