@@ -1,24 +1,15 @@
 package ca.hwlo.mrkook;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 
 /**
  * Created by Henry on 2015-07-02.
@@ -51,10 +42,13 @@ public class Food2ForkAPI extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String s) {
         //super.onPostExecute(s);
-        Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+        //Log.d("LOL", s);
         try {
             JSONObject jsonObject = new JSONObject(s);
-            Toast.makeText(mContext, jsonObject.getString("title"), Toast.LENGTH_SHORT).show();
+            JSONArray jsonArray = jsonObject.getJSONArray("recipes");
+
+            Log.d("RECIPECOUNT", String.valueOf(jsonArray.length()));
+            //Toast.makeText(mContext, jsonObject.getString("title"), Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             Log.d("Food Error", e.getLocalizedMessage());
         }

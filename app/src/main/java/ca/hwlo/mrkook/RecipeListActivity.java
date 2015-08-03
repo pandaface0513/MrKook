@@ -30,6 +30,13 @@ public class RecipeListActivity extends AppCompatActivity {
 
         searchField.setText(name);
 
+        getRecipeSearch(name);
+
+    }
+
+    private void getRecipeSearch(String term){
+        String urlString = Constants.API_URL + "?key=" + Constants.API_KEY + "&q=" + term;
+        new Food2ForkAPI(this).execute(urlString);
     }
 
     @Override
