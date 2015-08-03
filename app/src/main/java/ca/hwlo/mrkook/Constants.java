@@ -12,4 +12,5 @@ public class Constants {
     //api stuffs
     public static final String API_URL = "http://food2fork.com/api/search";
     public static final String API_KEY = "612e30069cbd11c599326ae490d735d5";
+
 }

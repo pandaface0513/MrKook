@@ -39,20 +39,11 @@ public class Food2ForkAPI extends AsyncTask<String, String, String> {
         return null;
     }
 
-    @Override
-    protected void onPostExecute(String s) {
-        //super.onPostExecute(s);
-        //Log.d("LOL", s);
-        try {
-            JSONObject jsonObject = new JSONObject(s);
-            JSONArray jsonArray = jsonObject.getJSONArray("recipes");
-
-            Log.d("RECIPECOUNT", String.valueOf(jsonArray.length()));
-            //Toast.makeText(mContext, jsonObject.getString("title"), Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
-            Log.d("Food Error", e.getLocalizedMessage());
-        }
-    }
+//    @Override
+//    protected void onPostExecute(String s) {
+//        //super.onPostExecute(s);
+//        //Log.d("LOL", s);
+//    }
 
     //    protected void onPreExecute(){
 //        progressDialog.setMessage("Downloading recipe...");
