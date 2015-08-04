@@ -90,7 +90,7 @@ public class AddFoodActivity extends AppCompatActivity implements View.OnClickLi
         mdb=new MyDatabase(getApplicationContext(), DATABASE_NAME,null, DATABASE_VERSION);
 
 
-        Bitmap b= BitmapFactory.decodeResource(getResources(), R.id.imageView); // trying to add the image in the imageview
+        Bitmap b= BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher); // trying to add the image in the imageview
         ByteArrayOutputStream bos=new ByteArrayOutputStream();
         b.compress(Bitmap.CompressFormat.PNG, 100, bos);
         img=bos.toByteArray();
