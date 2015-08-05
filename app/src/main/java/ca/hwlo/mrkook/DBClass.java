@@ -24,8 +24,17 @@ public class DBClass {
         return id;
     }
 
+    public long insertData(String name, int amount, byte[] image){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Constants.NAME, name);
+        contentValues.put(Constants.AMOUNNT, amount);
+        contentValues.put(Constants.IMAGE, image);
+        long id = db.insert(Constants.TABLE_NAME, null, contentValues);
+        return id;
+    }
+
     public String getData(){
-        String[] columns = {Constants.UID, Constants.NAME, Constants.AMOUNNT};
+        String[] columns = {Constants.UID, Constants.NAME, Constants.AMOUNNT, Constants.IMAGE};
         Cursor cursor = db.query(Constants.TABLE_NAME, columns, null, null, null, null, null, null);
 
         StringBuffer buffer = new StringBuffer();
@@ -39,20 +48,20 @@ public class DBClass {
     }
 
     public Cursor getAllCursor(){
-        String[] columns = {Constants.UID, Constants.NAME, Constants.AMOUNNT};
+        String[] columns = {Constants.UID, Constants.NAME, Constants.AMOUNNT, Constants.IMAGE};
         Cursor cursor = db.query(Constants.TABLE_NAME, columns, null, null, null, null, null, null);
         return cursor;
     }
 
     public Cursor getSelectedCursor(String term){
-        String[] columns = {Constants.UID, Constants.NAME, Constants.AMOUNNT};
+        String[] columns = {Constants.UID, Constants.NAME, Constants.AMOUNNT, Constants.IMAGE};
         String selection = Constants.NAME + "= '" + term + "'";
         Cursor cursor = db.query(Constants.TABLE_NAME, columns, selection, null, null, null, null, null);
         return cursor;
     }
 
     public String getSelectedData(String term){
-        String[] columns = {Constants.UID, Constants.NAME, Constants.AMOUNNT};
+        String[] columns = {Constants.UID, Constants.NAME, Constants.AMOUNNT, Constants.IMAGE};
         String selection = Constants.NAME + "= '" + term + "'";
         Cursor cursor = db.query(Constants.TABLE_NAME, columns, selection, null, null, null, null);
 

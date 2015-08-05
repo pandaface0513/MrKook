@@ -49,8 +49,12 @@ public class APIHELPER {
             Log.d("Context Length", String.valueOf(len));
 
             // Convert the InputStream into a string
-            String contentAsString = readIt(is, len);
-            return contentAsString;
+            if(len != -1){
+                String contentAsString = readIt(is, len);
+                return contentAsString;
+            }else{
+                return null;
+            }
 
             // Makes sure that the InputStream is closed after the app is
             // finished using it.

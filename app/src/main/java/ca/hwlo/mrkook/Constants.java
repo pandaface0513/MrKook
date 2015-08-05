@@ -7,6 +7,7 @@ public class Constants {
     public static final String UID = "_id";
     public static final String NAME = "Name";
     public static final String AMOUNNT = "Amount";
+    public static final String IMAGE = "Image";
     public static final int DATABASE_VERSION = 1;
 
     //api stuffs

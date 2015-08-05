@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private GridView grid;
     DBClass db;
     Cursor cursor;
-    SimpleCursorAdapter cursorAdapter;
+    GridFoodAdapter gridFoodAdapter;
 
     //request codes
     private static int ADD_FOOD_REQUEST = 111;
@@ -166,17 +166,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //set up database
         db = new DBClass(this);
 
-        //for cursor adapter, specify which columns go into which views
-        String[] fromColumns = {Constants.NAME, Constants.AMOUNNT};
-        int[] toViews = {R.id.foodNameText, R.id.foodAmount};
+//        //for cursor adapter, specify which columns go into which views
+//        String[] fromColumns = {Constants.NAME, Constants.AMOUNNT};
+//        int[] toViews = {R.id.foodNameText, R.id.foodAmount};
 
         //grab all data entry
         cursor = db.getAllCursor();
 
         //check if any data entries
         if(cursor != null){
-            cursorAdapter = new SimpleCursorAdapter(this, R.layout.list_grid, cursor, fromColumns, toViews, 2);
-            grid.setAdapter(cursorAdapter);
+            gridFoodAdapter = new GridFoodAdapter(this, cursor, 0);
+            grid.setAdapter(gridFoodAdapter);
 
             //insert on click listener here after
             grid.setOnItemClickListener(this);
@@ -197,9 +197,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 //then we handle the rest
                 String name = data.getStringExtra("foodName");
                 int amount = data.getIntExtra("foodAmount", 0);
+                byte[] image = data.getByteArrayExtra("imageData");
 
                 //try insert the data into db
-                long id = db.insertData(name, amount);
+                long id = db.insertData(name, amount, image);
 
                 if(id < 0){
                     //fail
@@ -232,8 +233,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private void updateUI(){
         cursor = db.getAllCursor();
-        cursorAdapter.swapCursor(cursor);
-        cursorAdapter.notifyDataSetChanged();
+        gridFoodAdapter.swapCursor(cursor);
+        gridFoodAdapter.notifyDataSetChanged();
     }
 
     @Override

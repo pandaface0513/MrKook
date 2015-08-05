@@ -32,6 +32,7 @@ public class Food2ForkAPI extends AsyncTask<String, String, String> {
     protected String doInBackground(String... urls) {
         try{
             APIHELPER apihelp = new APIHELPER();
+            Log.d("LOL", urls[0]);
             return apihelp.readJSON(urls[0]);
         }catch(IOException e){
             exception = e;

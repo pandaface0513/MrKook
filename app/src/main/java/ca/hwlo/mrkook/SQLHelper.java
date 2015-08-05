@@ -15,7 +15,8 @@ public class SQLHelper extends SQLiteOpenHelper {
                     Constants.TABLE_NAME + " (" +
                     Constants.UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     Constants.NAME + " TEXT, " +
-                    Constants.AMOUNNT + " INTEGER);";
+                    Constants.AMOUNNT + " INTEGER, " +
+                    Constants.IMAGE + " blob );";
 
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + Constants.TABLE_NAME;
 

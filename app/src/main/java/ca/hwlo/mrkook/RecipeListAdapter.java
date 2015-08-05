@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Henry on 2015-08-03.
@@ -36,13 +37,18 @@ public class RecipeListAdapter extends ArrayAdapter<Recipe> {
         }
         //lookup view for data population
         TextView titleText = (TextView) convertView.findViewById(R.id.recipeTitle);
-        TextView rankingText = (TextView) convertView.findViewById(R.id.rankingText);
+        TextView timingText = (TextView) convertView.findViewById(R.id.timingText);
 
         ImageView recipePic = (ImageView) convertView.findViewById(R.id.recipePic);
 
         //populate the data into the template view using the data object
         titleText.setText(recipe.recipeTitle);
-        rankingText.setText(recipe.recipeRank);
+
+        int baseTime = 10;
+        int randomTime = new Random().nextInt(60);
+        timingText.setText((baseTime + randomTime) + " minutes");
+
+        timingText.setTextColor(getContext().getResources().getColor(R.color.accent_material_light));
 
         //load the image
         new DownloadImageTask(recipePic).execute(recipe.recipeImageURL);

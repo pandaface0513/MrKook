@@ -7,23 +7,35 @@
     android:background="@drawable/back"
     >
 
-    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text=""
-        android:id="@+id/foodNameText"
-        android:layout_weight="1"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
 
-        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text=""
+            android:id="@+id/foodNameText"
+            android:layout_weight="1"
+            android:gravity="center"
 
+            />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text=""
-        android:id="@+id/foodAmount"
-        android:layout_weight="1"
-        android:gravity="center" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text=""
+            android:id="@+id/foodAmount"
+            android:layout_weight="1"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/foodImageView" />
+
 
 </LinearLayout>
