@@ -61,33 +61,12 @@ public class AddFoodActivity extends AppCompatActivity implements View.OnClickLi
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setIcon(R.mipmap.ic_launcher);
 
-        //camera
-        this.imageView = (ImageView)this.findViewById(R.id.imageView1);
-        Button photoButton = (Button) this.findViewById(R.id.button1);
-        photoButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-        });
 
-        imageview= (ImageView)findViewById(R.id.imageView_image);
-        imageview.setImageResource(0);
     }
 
 
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.PNG, 50, stream);
-            img =  stream.toByteArray();
-            imageView.setImageBitmap(photo);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -118,31 +118,31 @@
                 />
 
 
-            <ImageView
-                android:id="@+id/imageView_image"
+            <!--<ImageView-->
+                <!--android:id="@+id/imageView_image"-->
 
-                android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="64dp"-->
 
-                android:layout_width="wrap_content"/>
+                <!--android:layout_width="wrap_content"/>-->
 
-            <Button
-                android:id="@+id/button_insert"
-                android:layout_below="@+id/imageView_image"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
+            <!--<Button-->
+                <!--android:id="@+id/button_insert"-->
+                <!--android:layout_below="@+id/imageView_image"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="45dp"-->
 
-                android:layout_width="wrap_content"
-                android:text="Insert In DB"/>
+                <!--android:layout_width="wrap_content"-->
+                <!--android:text="Insert In DB"/>-->
 
-            <Button
-                android:id="@+id/button_retrieve"
-                android:layout_alignLeft="@+id/button_insert"
-                android:layout_below="@+id/button_insert"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="56dp"
-                android:layout_width="wrap_content"
-                android:text="Retrieve from DB"/>
+            <!--<Button-->
+                <!--android:id="@+id/button_retrieve"-->
+                <!--android:layout_alignLeft="@+id/button_insert"-->
+                <!--android:layout_below="@+id/button_insert"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="56dp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:text="Retrieve from DB"/>-->
 
         </LinearLayout>
     </ScrollView>
